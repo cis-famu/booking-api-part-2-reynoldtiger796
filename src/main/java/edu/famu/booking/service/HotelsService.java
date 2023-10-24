@@ -1,10 +1,7 @@
 package edu.famu.booking.service;
 
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.CollectionReference;
-import com.google.cloud.firestore.DocumentSnapshot;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.QuerySnapshot;
+import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import edu.famu.booking.model.Hotels;
 import org.springframework.stereotype.Service;
@@ -53,5 +50,31 @@ public class HotelsService {
         return documentSnapshotToHotels(document);
     }
 
+    public String createHotel(Hotels hotel) throws ExecutionException, InterruptedException {
+        String hotelId = null;
+        ApiFuture<DocumentReference> future = firestore.collection("Hotels").add(hotel);
+        DocumentReference postRef = future.get();
+        hotelId = postRef.getId();
+
+        return hotelId;
+    }
+
+    public void updateHotel(String hotelID, Hotels updatedHotel) {
+        CollectionReference hotelsCollection = firestore.collection("Hotels");
+        DocumentReference hotelDoc = hotelsCollection.document(hotelID);
+
+        if (hotelDoc != null) {
+            hotelDoc.set(updatedHotel, SetOptions.merge());
+        }
+    }
+
+    public void deleteHotel(String hotelId) {
+        CollectionReference hotelsCollection = firestore.collection("Hotels");
+        DocumentReference hotelDoc = hotelsCollection.document(hotelId);
+
+        if (hotelDoc != null) {
+            hotelDoc.delete();
+        }
+    }
 
 }
