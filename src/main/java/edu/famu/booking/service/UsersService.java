@@ -3,11 +3,12 @@ package edu.famu.booking.service;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
+import edu.famu.booking.model.Hotels;
 import edu.famu.booking.model.PaymentInformation;
 import edu.famu.booking.model.Users;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 @Service
@@ -49,6 +50,46 @@ public class UsersService {
         DocumentSnapshot document = future.get();
 
         return documentSnapshotToUsers(document);
+    }
+    public String createUsers(Users users) throws ExecutionException, InterruptedException {
+        String userId = null;
+        ApiFuture<DocumentReference> future = firestore.collection("Users").add(users);
+        DocumentReference postRef = future.get();
+        userId = postRef.getId();
+
+        return userId;
+    }
+
+    public void updateUsers(String id, Map<String, Object> updateValues)
+    {
+        String [] allowed = {"name", "email", "phone", "paymentInformation", "createdAt"};
+        List<String> list = Arrays.asList(allowed);
+        Map<String, Object> formattedValues = new HashMap<>();
+
+        for(Map.Entry<String, Object> entry : updateValues.entrySet()){
+            String key = entry.getKey();
+            if(list.contains(key)) {
+                if(key.equals("paymentInformation"))
+                {
+                    Map<String,String> inner = (Map<String, String>) entry.getValue();
+                    formattedValues.put(key,inner);
+                }
+                else
+                    formattedValues.put(key, (String) entry.getValue());
+            }
+        }
+        DocumentReference UserDoc = firestore.collection("Users").document(id);
+        if(UserDoc != null)
+            UserDoc.update(formattedValues);
+    }
+
+    public void deleteUsers(String userId) {
+        CollectionReference usersCollection = firestore.collection("Users");
+        DocumentReference userDoc = usersCollection.document(userId);
+
+        if (userDoc != null) {
+            userDoc.delete();
+        }
     }
 
 }

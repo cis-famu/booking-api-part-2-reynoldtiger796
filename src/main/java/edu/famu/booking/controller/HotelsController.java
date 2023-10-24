@@ -5,6 +5,7 @@ import edu.famu.booking.util.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 @RestController
@@ -47,12 +48,24 @@ public class HotelsController {
     }
 
     @PutMapping("/{hotelId}")
-    public ResponseEntity<ApiResponse> updateHotel(@PathVariable String hotelId, @RequestBody Hotels hotel) {
+    public ResponseEntity<ApiResponse> updateHotels(@PathVariable String id, @RequestBody Map<String,String> data){
+        try{
+            hotelsService.updateHotel(id, data);
+            return ResponseEntity.ok(new ApiResponse(true, "Hotel successfully updated",null,null));
+        } catch (Exception e){
+            return ResponseEntity.status(500).body(new ApiResponse(false, "An error occurred.", null, e.getMessage()));
+        }
+    }
+
+    @DeleteMapping("/{hotelId}")
+    public ResponseEntity<ApiResponse> deleteHotels(@PathVariable String hotelId) {
         try {
-            hotelsService.updateHotel(hotelId, hotel);
-            return ResponseEntity.ok(new ApiResponse(true, "Hotel successfully updated", null, null));
+            hotelsService.deleteHotels(hotelId);
+            return ResponseEntity.ok(new ApiResponse(true, "Hotel successfully deleted", null, null));
         } catch (Exception e) {
             return ResponseEntity.status(500).body(new ApiResponse(false, "An error occurred.", null, e.getMessage()));
         }
     }
+
+
 }

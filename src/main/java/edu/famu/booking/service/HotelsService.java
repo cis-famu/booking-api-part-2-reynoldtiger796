@@ -6,7 +6,7 @@ import com.google.firebase.cloud.FirestoreClient;
 import edu.famu.booking.model.Hotels;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 @Service
@@ -59,16 +59,23 @@ public class HotelsService {
         return hotelId;
     }
 
-    public void updateHotel(String hotelID, Hotels updatedHotel) {
-        CollectionReference hotelsCollection = firestore.collection("Hotels");
-        DocumentReference hotelDoc = hotelsCollection.document(hotelID);
+    public void updateHotel(String id, Map<String, Object> updateValues)
+    {
+        String [] allowed = {"name", "description", "rating", "address", "contactInformation", "amenities", "createdAt"};
+        List<String> list = Arrays.asList(allowed);
+        Map<String, Object> formattedValues = new HashMap<>();
 
-        if (hotelDoc != null) {
-            hotelDoc.set(updatedHotel, SetOptions.merge());
+        for(Map.Entry<String, Object> entry : updateValues.entrySet()){
+            String key = entry.getKey();
+            if(list.contains(key))
+                formattedValues.put(key, entry.getValue());
         }
+        DocumentReference HotelDoc = firestore.collection("Hotels").document(id);
+        if(HotelDoc != null)
+            HotelDoc.update(formattedValues);
     }
 
-    public void deleteHotel(String hotelId) {
+    public void deleteHotels(String hotelId) {
         CollectionReference hotelsCollection = firestore.collection("Hotels");
         DocumentReference hotelDoc = hotelsCollection.document(hotelId);
 

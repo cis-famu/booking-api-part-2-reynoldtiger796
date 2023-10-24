@@ -59,27 +59,3 @@ All URIs start with: `http://localhost:8080/api/v1`
 
 ### Stretch Stories
 
-1. Create an endpoint that allows the user to find all hotels with a room available on a specific date. Accept the date as a query parameter ***(3 points)***
-2. Create an Reservation collection. *Note: ReservationDetail is not a collection* ***(3 points)***
-
-|field|type|
-|---|---|
-|customer| User reference|
-|hotel| Hotel reference|
-|checkIn| Timestamp|
-|checkOut|Timestamp|
-|total|double|
-|rooms|ArrayList<ReservationDetail>|
-	
-*ReservationDetail*
-|field|type|
-|---|---|
-|room|RoomNumber|
-|adults|integer|
-|children|integer|
-|pricePerNight|double|
-	
-3. Create an endpoint thhat allows the user to create a reservation. ***(2 points)***
-    - Add this end point to the table if you create it.
-
-
