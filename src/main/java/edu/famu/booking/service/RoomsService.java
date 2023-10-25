@@ -60,13 +60,13 @@ public class RoomsService {
         return roomId;
     }
 
-    public void updateRooms(String id, Map<String, String> updateValues)
+    public void updateRooms(String id, Map<String, Object> updateValues)
     {
         String [] allowed = {"roomType", "price", "rating", "capacity", "description", "availability", "images", "createdAt"};
         List<String> list = Arrays.asList(allowed);
         Map<String, Object> formattedValues = new HashMap<>();
 
-        for(Map.Entry<String, String> entry : updateValues.entrySet()){
+        for(Map.Entry<String, Object> entry : updateValues.entrySet()){
             String key = entry.getKey();
             if(list.contains(key))
                 formattedValues.put(key, entry.getValue());

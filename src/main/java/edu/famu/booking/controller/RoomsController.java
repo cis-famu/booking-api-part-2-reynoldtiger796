@@ -48,7 +48,7 @@ public class RoomsController {
     }
 
     @PutMapping("/{roomId}")
-    public ResponseEntity<ApiResponse> updateRooms(@PathVariable String id, @RequestBody Map<String,String> data){
+    public ResponseEntity<ApiResponse> updateRooms(@PathVariable (name="roomId") String id, @RequestBody Map<String,Object> data){
         try{
             roomsService.updateRooms(id, data);
             return ResponseEntity.ok(new ApiResponse(true, "Room successfully updated",null,null));

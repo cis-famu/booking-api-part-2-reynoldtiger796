@@ -48,7 +48,7 @@ public class HotelsController {
     }
 
     @PutMapping("/{hotelId}")
-    public ResponseEntity<ApiResponse> updateHotels(@PathVariable String id, @RequestBody Map<String,String> data){
+    public ResponseEntity<ApiResponse> updateHotels(@PathVariable (name="userId") String id, @RequestBody Map<String,Object> data){
         try{
             hotelsService.updateHotel(id, data);
             return ResponseEntity.ok(new ApiResponse(true, "Hotel successfully updated",null,null));
