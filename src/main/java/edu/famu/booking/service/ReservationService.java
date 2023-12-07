@@ -1,26 +1,37 @@
 package edu.famu.booking.service;
 
+
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.Firestore;
 import com.google.firebase.cloud.FirestoreClient;
 import edu.famu.booking.model.Reservation;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.ExecutionException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 
 @Service
 public class ReservationService {
-    private Firestore firestore;
+    private final Firestore firestore;
 
     public ReservationService() {
         this.firestore = FirestoreClient.getFirestore();
     }
 
-    public String createReservation(Reservation reservation) throws ExecutionException, InterruptedException {
-        DocumentReference docRef = firestore.collection("Reservations").document();
-        docRef.set(reservation); // This will create a new document with an automatically generated ID.
+    public String createReservation(Reservation reservation) {
+        String reservationId = UUID.randomUUID().toString();
 
-        String reservationId = docRef.getId();
+        Map<String, Object> reservationData = new HashMap<>();
+        reservationData.put("customerId", reservation.getCustomer().getUserID());
+        reservationData.put("hotelId", reservation.getHotel().getHotelID());
+        reservationData.put("checkIn", reservation.getCheckIn().toString());
+        reservationData.put("checkOut", reservation.getCheckOut().toString());
+        reservationData.put("rooms", reservation.getRooms());
+
+        DocumentReference reservationDocRef = firestore.collection("Reservations").document(reservationId);
+        reservationDocRef.set(reservationData);
 
         return reservationId;
     }

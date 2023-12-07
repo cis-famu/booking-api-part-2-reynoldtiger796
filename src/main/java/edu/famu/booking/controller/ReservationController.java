@@ -20,13 +20,10 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
-    @PostMapping
-    public ResponseEntity<ApiResponse> createReservation(@RequestBody Reservation reservation) {
-        try {
-            String reservationId = reservationService.createReservation(reservation);
-            return ResponseEntity.ok(new ApiResponse(true, "Reservation created successfully", reservationId, null));
-        } catch (ExecutionException | InterruptedException e) {
-            return ResponseEntity.status(500).body(new ApiResponse(false, "An error occurred.", null, e.getMessage()));
-        }
+    @PostMapping("/create")
+    public ResponseEntity<String> createReservation(@RequestBody Reservation reservation) {
+        String reservationId = reservationService.createReservation(reservation);
+        return ResponseEntity.ok(reservationId);
     }
 }
+

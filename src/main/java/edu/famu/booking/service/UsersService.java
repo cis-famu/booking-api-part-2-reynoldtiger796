@@ -60,23 +60,16 @@ public class UsersService {
         return userId;
     }
 
-    public void updateUsers(String id, Map<String, Object> updateValues)
+    public void updateUsers(String id, Map<String, String> updateValues)
     {
         String [] allowed = {"name", "email", "phone", "paymentInformation", "createdAt"};
         List<String> list = Arrays.asList(allowed);
         Map<String, Object> formattedValues = new HashMap<>();
 
-        for(Map.Entry<String, Object> entry : updateValues.entrySet()){
+        for(Map.Entry<String, String> entry : updateValues.entrySet()){
             String key = entry.getKey();
-            if(list.contains(key)) {
-                if(key.equals("paymentInformation"))
-                {
-                    Map<String,String> inner = (Map<String, String>) entry.getValue();
-                    formattedValues.put(key,inner);
-                }
-                else
-                    formattedValues.put(key, (String) entry.getValue());
-            }
+            if(list.contains(key))
+                formattedValues.put(key, entry.getValue());
         }
         DocumentReference UserDoc = firestore.collection("Users").document(id);
         if(UserDoc != null)

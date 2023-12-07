@@ -49,7 +49,7 @@ public class UsersController {
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<ApiResponse> updateUsers(@PathVariable (name="userId") String id, @RequestBody Map<String,Object> data){
+    public ResponseEntity<ApiResponse> updateUsers(@PathVariable (name="userId") String id, @RequestBody Map<String,String> data){
         try{
             usersService.updateUsers(id, data);
             return ResponseEntity.ok(new ApiResponse(true, "User successfully updated",null,null));
