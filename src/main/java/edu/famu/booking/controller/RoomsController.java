@@ -1,5 +1,4 @@
 package edu.famu.booking.controller;
-import edu.famu.booking.model.Hotels;
 import edu.famu.booking.model.Rooms;
 import edu.famu.booking.service.RoomsService;
 import edu.famu.booking.util.ApiResponse;

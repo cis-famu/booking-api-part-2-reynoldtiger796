@@ -62,7 +62,7 @@ public class UsersService {
 
     public void updateUsers(String id, Map<String, String> updateValues)
     {
-        String [] allowed = {"name", "email", "phone", "paymentInformation", "createdAt"};
+        String [] allowed = {"name", "email", "phone", "createdAt"};
         List<String> list = Arrays.asList(allowed);
         Map<String, Object> formattedValues = new HashMap<>();
 

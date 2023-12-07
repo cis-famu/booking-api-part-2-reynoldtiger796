@@ -62,7 +62,7 @@ public class RoomsService {
 
     public void updateRooms(String id, Map<String, Object> updateValues)
     {
-        String [] allowed = {"roomType", "price", "rating", "capacity", "description", "availability", "images", "createdAt"};
+        String [] allowed = {"roomType", "price", "rating", "capacity", "description", "availability", "createdAt"};
         List<String> list = Arrays.asList(allowed);
         Map<String, Object> formattedValues = new HashMap<>();
 
